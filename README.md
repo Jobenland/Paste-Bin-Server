@@ -1,29 +1,17 @@
-# Flask Boilerplate
+# Paste Bin Server
 
-##### Version: 0.1
+##### Version: 1.0.0
 
 ## Author
-[Daniel Abeles](https://twitter.com/Daniel_Abeles)
+[Jonathan Obenland](https://jonathanobenland.com)
 
 ## About
 
-For a long time I created my Flask applications from scratch or assembled them from
-previous pieces of code. Therefore, I created this boilerplate that will be the
-codebase for every Flask app that I'll produce in the future. Some of the parts
-in this boilerplate are originated from various code bases, therefore they are
-credited in the Credits section.
-
-## Features
-
-* Login Management
-* Captcha
-* API blueprints
-* App factory
-* Database support
+I always struggled getting links from my phone to other computers and was frusturated dealing with overly complex systems for such a simple idea
 
 ## How-To
 
-To setup the application follow these steps:
+Users can navigate to the website and enter any text they may want to send. Users will then add a key to the text that will be able to grab the text from another computer. Users can then navigate to the retrieve text option, enter their key, and copy the text.
 
 ### Create a virtual environment
 
@@ -33,24 +21,14 @@ pyenv activate venv
 pip install -r requirements.txt
 ```
 
-### Configuration
-
-If captcha is desired - please set the following fields in `config.py`:
-
-1. `SHOW_CAPTCHA`
-2. `RECAPTCHA_SITE_KEY`
-3. `RECAPTCHA_SECRET_KEY`
-
-For more information visit the
-[documentation](https://developers.google.com/recaptcha/docs/verify)
-
 ### Run
 
 ```bash
-python manage.py createdb
 python manage.py runserver
+python manage.py runserver --host=<enter IP>
 ```
 
 ## Credits
-
-1. [Miguel Grinberg](https://github.com/miguelgrinberg)
+Thanks to 
+1. [Daniel Abeles](https://twitter.com/Daniel_Abeles)
+for other help
