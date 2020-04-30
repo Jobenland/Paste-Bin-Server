@@ -7,6 +7,7 @@ from .models import User
 from .utils import validate_captcha
 
 import json
+import os
 
 main = Blueprint('main', __name__)
 
@@ -17,16 +18,31 @@ def before_request():
 
 
 @main.route('/', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def index():
+    print(current_user)
+    print(g.user)
     try:
         my_var = session.get('status', None)
     except:
         my_var = ' '
+
     return render_template('index.html')
 
+@main.route('/admin', methods=['GET', 'POST'])
+@login_required
+def admin():
+    print(current_user)
+    print(g.user)
+    try:
+        my_var = session.get('status', None)
+    except:
+        my_var = ' '
+
+    return render_template('index_special.html')
 
 @main.route('/register', methods=['GET', 'POST'])
+@login_required
 def register():
     if request.method == 'GET':
         return render_template('register.html')
@@ -45,16 +61,16 @@ def register():
         flash('Passwords must match!')
         return redirect(url_for('main.register'))
 
-    user = User.create(email, password)
+    # user = User.create(email, password)
 
-    try:
-        db.session.add(user)
-        db.session.commit()
-    except:
-        flash('User already exists!')
-        return redirect(url_for('main.register'))
+    # try:
+    #     db.session.add(user)
+    #     db.session.commit()
+    # except:
+    #     flash('User already exists!')
+    #     return redirect(url_for('main.register'))
 
-    return redirect(url_for('main.login'))
+    return redirect(url_for('main.index'))
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -79,7 +95,7 @@ def login():
     else:
         login_user(registered_user)
 
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.admin'))
 
 @main.route('/add', methods=['POST'])
 def add():
@@ -121,10 +137,19 @@ def get():
             data = findtext(key)
             return render_template("findtext.html", data=data)
 
-@main.route('/logout', methods=['POST'])
+@main.route('/logout', methods=['GET','POST'])
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@main.route('/overwriter',  methods=['POST'])
+def overwriter():
+    try:
+        os.remove("text.json")
+        overwrite()
+    except:
+        flash("No File Exists")
+        return redirect(url_for('main.admin'))
 
 def addtext(elem):
     try:
@@ -142,15 +167,18 @@ def addtext(elem):
             json.dump(data, f)
 
 def findkey(key):
+    try:
+        with open('text.json',"r",encoding="utf8") as json_file:
+            data = json_file.read() 
+        obj = json.loads(data)
 
-    with open('text.json',"r",encoding="utf8") as json_file:
-        data = json_file.read() 
-    obj = json.loads(data)
-
-    for elem in range(len(obj)):
-        if obj[elem]['key'] == key:
-            return False
-    return True
+        for elem in range(len(obj)):
+            if obj[elem]['key'] == key:
+                return False
+        return True
+    except:
+        elem={"text": "NULL", "key": "NULL"}
+        addtext(elem)
 
 def findtext(key):
     with open('text.json',"r",encoding="utf8") as json_file:
@@ -161,3 +189,18 @@ def findtext(key):
         if obj[elem]['key'] == key:
             return obj[elem]['text']
     return ''
+
+def overwrite():
+    elem={"text": "NULL", "key": "NULL"}
+    try:
+        with open ("text.json") as f:
+            data = json.load(f)
+        if type(elem) is dict:
+            data = [elem]
+        with open ("text.json","w") as f:
+            json.dump(data, f)
+    except FileNotFoundError:
+        if type(elem) is dict:
+            data = [elem]
+        with open ("text.json",'w') as f:
+            json.dump(data, f)
