@@ -12,6 +12,7 @@
 <script src="{{ url_for('static', filename='options.js') }}"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+{{ url_for('static', filename='script.js') }}
  {% endblock %}
 
 <!-- Main Body -->
@@ -76,8 +77,8 @@
     </div>
     <table class="table table-bordered table-striped" id="paste_table">
       <tr>
-        <th>Text</th>
-        <th>Key</th>
+        <th>text</th>
+        <th>key</th>
       </tr>
     </table>
   </div>

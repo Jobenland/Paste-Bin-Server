@@ -11,6 +11,7 @@ import json
 main = Blueprint('main', __name__)
 
 
+
 @main.before_app_request
 def before_request():
     g.user = current_user
@@ -128,22 +129,22 @@ def logout():
 
 def addtext(elem):
     try:
-        with open ("text.json") as f:
+        with open ("app/files/text.json") as f:
             data = json.load(f)
         if type(elem) is dict:
             data.append(elem)
-        with open ("text.json","w") as f:
+        with open ("app/files/text.json","w") as f:
             json.dump(data, f)
 
     except FileNotFoundError:
         if type(elem) is dict:
             data = [elem]
-        with open ("text.json",'w') as f:
+        with open ("app/files/text.json",'w') as f:
             json.dump(data, f)
 
 def findkey(key):
 
-    with open('text.json',"r",encoding="utf8") as json_file:
+    with open('app/files/text.json',"r",encoding="utf8") as json_file:
         data = json_file.read() 
     obj = json.loads(data)
 
@@ -153,7 +154,7 @@ def findkey(key):
     return True
 
 def findtext(key):
-    with open('text.json',"r",encoding="utf8") as json_file:
+    with open('app/files/text.json',"r",encoding="utf8") as json_file:
         data = json_file.read() 
     obj = json.loads(data)
 
