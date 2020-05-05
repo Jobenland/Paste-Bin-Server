@@ -15,7 +15,7 @@ class Config(object):
 
 
 class DevelopmentConfig(Config):
-    DEBUG = False
+    DEBUG = True
 
 
 class ProductionConfig(Config):

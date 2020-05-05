@@ -8,6 +8,8 @@ from .utils import validate_captcha
 
 import json
 
+from datetime import datetime
+
 main = Blueprint('main', __name__)
 
 
@@ -85,6 +87,8 @@ def login():
 def add():
     text = request.form['paste']
     key = request.form['key']
+    user = current_user
+    time = datetime.now()
     print(text)
     print(key)
     if key == '' or text == '':
@@ -95,7 +99,7 @@ def add():
         if unique == True:
             elem = {'text': text, 'key': key}
             addtext(elem)
-            data = "Your message has been saved. Your retreval code is " + key
+            data = "Your message has been saved. Your message can be seen at 127.0.0.1/" + key
             session['status'] = "Your message has been saved. Your retreval code is " + key
             return render_template("index.html", data=data)
         else:
@@ -125,6 +129,11 @@ def get():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@main.route("/<variable>",methods=['GET'])
+def share_file(variable):
+    paste = findtext(variable)
+    return render_template("template.html",data = paste)
 
 def addtext(elem):
     try:
