@@ -4,7 +4,15 @@
 {% block title %} Home {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> {% endblock %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> 
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">{% endblock %}
+
+<!-- Scripts -->
+{% block scripts %}
+<script src="{{ url_for('static', filename='options.js') }}"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+ {% endblock %}
 
 <!-- Main Body -->
 {% block body %}
@@ -66,6 +74,12 @@
           </div>
         </form>
     </div>
+    <table class="table table-bordered table-striped" id="paste_table">
+      <tr>
+        <th>Text</th>
+        <th>Key</th>
+      </tr>
+    </table>
   </div>
 </main>
 

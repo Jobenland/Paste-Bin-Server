@@ -4,7 +4,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
-    DEBUG = False
+    DEBUG = True
     TESTING = False
     SECRET_KEY = '<please change this secret key!>'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -15,7 +15,7 @@ class Config(object):
 
 
 class DevelopmentConfig(Config):
-    DEBUG = False
+    DEBUG = True
 
 
 class ProductionConfig(Config):

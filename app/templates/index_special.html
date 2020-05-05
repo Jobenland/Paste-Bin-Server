@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+<!-- Define a title -->
+{% block title %} Home {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> {% endblock %}
+
+<!-- Main Body -->
+{% block body %}
+
+<header>
+  <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css" rel="stylesheet">
+  <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.0.min.css" rel="stylesheet">
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="http://jonathanobenland.com">Paste Bin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Send Text<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/retreive">Retreive Text<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/register">Create Account</a>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0">
+        <p class="text-success">Connected</p>
+        <form action="{{ url_for('main.overwriter')}}" method="post">
+            <button class="btn btn-warning">Clear file</a>
+        </form>
+      </form>
+    </div>
+  </nav>
+</header>
+
+<!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+  <div class="container">
+  <p class="text-center">Current user is <span style="color: red">{{ g.user.email }}</span>
+    <div class="card text-center">
+        <div class="card-header">
+            Submit New Text
+        </div>
+        <div class="card-body">
+        <form action="{{ url_for('main.add')}}" method="post">
+            <div class="form-group">
+                <textarea class="form-control" rows="5" name='paste' id="paste" placeholder='Enter Text Here...'></textarea>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name='key' id="key" aria-describedby="key" placeholder="Enter Unique Key...">
+                <small id="key" class="form-text text-muted">Dont forget, this will be needed to retrieve your text</small>
+            </div>
+            <div id='info_section'>
+            <p class="text-center">{{ data }}</p>
+    </div>
+        </div>
+          <div class="card-footer text-muted text-success">
+            <button class="btn btn-danger">Submit</a>
+          </div>
+        </form>
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th class="th-sm">Name
+              </th>
+              <th class="th-sm">Position
+              </th>
+              <th class="th-sm">Office
+              </th>
+              <th class="th-sm">Age
+              </th>
+              <th class="th-sm">Start date
+              </th>
+              <th class="th-sm">Salary
+              </th>
+            </tr>
+          </thead>
+            <tfoot>
+            <tr>
+              <th>Name
+              </th>
+              <th>Position
+              </th>
+              <th>Office
+              </th>
+              <th>Age
+              </th>
+              <th>Start date
+              </th>
+              <th>Salary
+              </th>
+            </tr>
+          </tfoot>
+        </table>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
