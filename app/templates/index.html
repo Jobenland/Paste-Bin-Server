@@ -42,7 +42,12 @@
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
   <div class="container">
+  {% if User == '' %}
+  <p class="text-center">Create an account to unlock paste history and custom keys!</span>
+  {% endif %}
+  {% if User != '' %}
   <p class="text-center">Current user is <span style="color: red">{{ g.user.email }}</span>
+  {% endif %}
     <div class="card text-center">
         <div class="card-header">
             Submit New Text
@@ -70,7 +75,28 @@
           </div>
         </form>
     </div>
-  </div>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope='col'> text </th>
+      <th scope='col'> key </th>
+      <th scope='col'> user </th>
+      <th scope='col'> time </th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for elem in entries %}
+    <tr>
+      <td>{{elem['text']}}</td>
+      <td>{{elem['key']}}</td>
+      <td>{{elem['user']}}</td>
+      <td>{{elem['time']}}</td>
+    </tr>
+    {% endfor %}
+   </tbody>
+</table>
+</div>
 </div>
 </main>
 

@@ -34,7 +34,11 @@ def index():
         my_var = session.get('status', None)
     except:
         my_var = ' '
-    return render_template('index.html',User=logged)
+
+    with open('text.json',"r",encoding="utf8") as json_file:
+        data = json_file.read() 
+    obj = json.loads(data)
+    return render_template('index.html',User=logged,entries=obj)
 
 
 @main.route('/register', methods=['GET', 'POST'])
@@ -93,6 +97,7 @@ def login():
 
     return redirect(url_for('main.index'))
 
+#TODO add time to expire
 @main.route('/add', methods=['POST'])
 def add():
     text = request.form['paste']

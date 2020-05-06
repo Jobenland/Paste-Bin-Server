@@ -42,7 +42,12 @@
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
   <div class="container">
+  {% if User == '' %}
+  <p class="text-center">Create an account to unlock paste history and custom keys!</span>
+  {% endif %}
+  {% if User != '' %}
   <p class="text-center">Current user is <span style="color: red">{{ g.user.email }}</span>
+  {% endif %}
     <div class="card text-center">
         <div class="card-header">
             Retreive Text
