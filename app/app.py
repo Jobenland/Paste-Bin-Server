@@ -24,7 +24,7 @@ def before_request():
 
 
 @main.route('/', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def index():
     try:
         my_var = session.get('status', None)
@@ -81,8 +81,8 @@ def login():
     registered_user = User.get_user(username, password)
 
     if registered_user is None:
-        #flash('Username or Password is invalid')
-        return redirect(url_for('main.login'))
+        flash('Username or Password is invalid')
+        return redirect(url_for('main.index'))
     else:
         login_user(registered_user)
 
