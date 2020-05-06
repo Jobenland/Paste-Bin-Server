@@ -81,7 +81,7 @@ def login():
     registered_user = User.get_user(username, password)
 
     if registered_user is None:
-        flash('Username or Password is invalid')
+        #flash('Username or Password is invalid')
         return redirect(url_for('main.login'))
     else:
         login_user(registered_user)
@@ -109,11 +109,12 @@ def add():
             elem = {'text': text, 'key': key, 'user': user, 'time': time}
             addtext(elem)
             data = "Your message has been saved. Your message can be seen at 127.0.0.1/" + key
-            session['status'] = "Your message has been saved. Your retreval code is " + key
+            #session['status'] = "Your message has been saved. Your retreval code is " + key
             pastebin_re = re.compile(r'@([\w]+)')
             paste_text = pastebin_re.sub(r'<a href="http://127.0.0.1:5000/\1">@\1</a>', key)
             print(paste_text)
-            url = "http://127.0.0.1:5000/"+key
+            url = "http://192.168.1.68:5000/"+key
+            session['status'] = "Your message has been saved. Your retreval code is " + key + " and can be accessed at " +url
             return redirect(url)
 
         else:
@@ -131,12 +132,14 @@ def get():
         flash("Key feild must be filled")
         return redirect(url_for('main.retreive'))
     else:
+        url = "http://192.168.1.68:5000/"+key
+        return redirect(url)
         repeat = findkey(key)
         if repeat:
             flash("Key does not exist")
             return render_template("findtext.html")
         else:
-            data = findtext(key)
+            data,user,time = findtext(key)
             return render_template("findtext.html", data=data)
 
 @main.route('/logout', methods=['POST'])
@@ -147,8 +150,10 @@ def logout():
 @main.route("/<variable>",methods=['GET'])
 def share_file(variable):
     paste,user,time = findtext(variable)
-    flash("test","success")
-    return render_template("template.html",data = paste,user = user, time=time)
+    my_var = session.get('status', None)
+    session['status'] = ''
+    #flash("Account created!", "success")
+    return render_template("template.html",data = paste,user = user, time=time,message = my_var)
 
 def addtext(elem):
     try:

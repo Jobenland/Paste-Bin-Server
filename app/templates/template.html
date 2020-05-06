@@ -6,6 +6,9 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> {% endblock %}
 
+{% block scripts %}
+<script src="{{ url_for('static', filename='options.js') }}"></script> {% endblock %}
+
 
 <!-- Main Body -->
 {% block body %}
@@ -48,6 +51,14 @@
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
   <div class="container">
+      {% if message != '' %}
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+    {% endif %}
   <p class="text-center">Current user is <span style="color: red">{{ g.user.email }}</span>
     <div class="card text-center">
         <div class="card-header">
@@ -66,5 +77,4 @@
     </div>
   </div>
 </main>
-
 {% endblock %}
