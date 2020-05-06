@@ -27,10 +27,14 @@ def before_request():
 #@login_required
 def index():
     try:
+        logged = g.user.email
+    except:
+        logged = ''
+    try:
         my_var = session.get('status', None)
     except:
         my_var = ' '
-    return render_template('index.html')
+    return render_template('index.html',User=logged)
 
 
 @main.route('/register', methods=['GET', 'POST'])
@@ -50,7 +54,7 @@ def register():
 
     if password != password_confirm:
         flash('Passwords must match!')
-        return redirect(url_for('main.register'))
+        return redirect(url_for('main.comb'))
 
     user = User.create(email, password)
 
@@ -59,9 +63,10 @@ def register():
         db.session.commit()
     except:
         flash('User already exists!')
-        return redirect(url_for('main.register'))
+        return redirect(url_for('main.comb'))
 
-    return redirect(url_for('main.login'))
+    session['login'] = "User Created! login below"
+    return redirect(url_for('main.comb'))
 
 
 @main.route('/login', methods=['GET', 'POST'])
@@ -92,7 +97,10 @@ def login():
 def add():
     text = request.form['paste']
     key = request.form['key']
-    user = g.user.email
+    try:
+        user = g.user.email
+    except:
+        user = ''
     time = str(datetime.now())
     print(text)
     print(key)
@@ -123,7 +131,17 @@ def add():
     
 @main.route('/retreive', methods=['GET', 'POST'])
 def retreive():
-    return render_template('findtext.html')
+    try:
+        logged = g.user.email
+    except:
+        logged = ''
+    return render_template('findtext.html',User=logged)
+
+@main.route('/comb', methods=['GET', 'POST'])
+def comb():
+    success = session.get('login', None)
+    session['login'] = ''
+    return render_template('logincreate.html',message=success)
 
 @main.route('/get', methods=['GET', 'POST'])
 def get():
@@ -142,7 +160,7 @@ def get():
             data,user,time = findtext(key)
             return render_template("findtext.html", data=data)
 
-@main.route('/logout', methods=['POST'])
+@main.route('/logout', methods=['GET','POST'])
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
@@ -153,7 +171,7 @@ def share_file(variable):
     my_var = session.get('status', None)
     session['status'] = ''
     #flash("Account created!", "success")
-    return render_template("template.html",data = paste,user = user, time=time,message = my_var)
+    return render_template("template.html",data = paste,user = user, time=time,message = my_var,User=user)
 
 def addtext(elem):
     try:
