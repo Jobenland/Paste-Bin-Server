@@ -8,9 +8,14 @@ from .utils import validate_captcha
 
 import json
 
+import re
 from datetime import datetime
 
+import string
+import random
+
 main = Blueprint('main', __name__)
+
 
 
 @main.before_app_request
@@ -87,21 +92,30 @@ def login():
 def add():
     text = request.form['paste']
     key = request.form['key']
-    user = current_user
-    time = datetime.now()
+    user = g.user.email
+    time = str(datetime.now())
     print(text)
     print(key)
-    if key == '' or text == '':
+    print(time)
+    print(user)
+    if text == '':
         flash("Both feilds must be filled")
         return redirect(url_for('main.index'))
     else:
+        if key == '':
+            key = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
         unique = findkey(key)
         if unique == True:
-            elem = {'text': text, 'key': key}
+            elem = {'text': text, 'key': key, 'user': user, 'time': time}
             addtext(elem)
             data = "Your message has been saved. Your message can be seen at 127.0.0.1/" + key
             session['status'] = "Your message has been saved. Your retreval code is " + key
-            return render_template("index.html", data=data)
+            pastebin_re = re.compile(r'@([\w]+)')
+            paste_text = pastebin_re.sub(r'<a href="http://127.0.0.1:5000/\1">@\1</a>', key)
+            print(paste_text)
+            url = "http://127.0.0.1:5000/"+key
+            return redirect(url)
+
         else:
             flash("Key has already been used. Use a different key")
             return redirect(url_for('main.index'))
@@ -132,8 +146,9 @@ def logout():
 
 @main.route("/<variable>",methods=['GET'])
 def share_file(variable):
-    paste = findtext(variable)
-    return render_template("template.html",data = paste)
+    paste,user,time = findtext(variable)
+    flash("test","success")
+    return render_template("template.html",data = paste,user = user, time=time)
 
 def addtext(elem):
     try:
@@ -168,5 +183,5 @@ def findtext(key):
 
     for elem in range(len(obj)):
         if obj[elem]['key'] == key:
-            return obj[elem]['text']
-    return ''
+            return obj[elem]['text'],obj[elem]['user'],obj[elem]['time']
+    return '','',''

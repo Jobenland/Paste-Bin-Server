@@ -19,3 +19,11 @@ main > .container {
   code {
     font-size: 80%;
   }
+  
+  .alert.success {
+    background-color: green;
+  }
+  
+  .alert.error {
+    background-color: red;
+  }

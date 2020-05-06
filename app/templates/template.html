@@ -6,9 +6,14 @@
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> {% endblock %}
 
+
 <!-- Main Body -->
 {% block body %}
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
 <header>
   <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css" rel="stylesheet">
   <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.0.min.css" rel="stylesheet">
