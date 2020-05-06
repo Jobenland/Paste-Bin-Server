@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+<!-- Define a title -->
+{% block title %} Retreive {% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}"> {% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='options.js') }}"></script> {% endblock %}
+
+
+<!-- Main Body -->
+{% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="{{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+<header>
+  <link href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.5.min.css" rel="stylesheet">
+  <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-0.12.0.min.css" rel="stylesheet">
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="http://jonathanobenland.com">Paste Bin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Send Text<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/retreive">Retreive Text<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0">
+      </form>
+    </div>
+  </nav>
+</header>
+
+<!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+  <div class="container">
+    {% if message != '' %}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <span>{{ message }}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    <p class="text-center">Sign in or create an account</span>
+    <div class="row text-center">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Sign In</div>
+                <div class="card-body">
+                    <form action="{{ url_for('main.login')}}" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Username" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>  
+                    </div>                      
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-danger">Submit</a>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header">Create Account</div>
+                <div class="card-body">
+                    <form action="{{ url_for('main.register')}}" method="post">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Username" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Confirm Password" name="password_confirm" required>
+                    </div>                                         
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-danger">Submit</a>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
